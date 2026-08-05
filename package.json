@@ -1,0 +1,61 @@
+{
+  "name": "ai-code-review",
+  "version": "0.9.0",
+  "description": "AI Code Review is a GitHub Action that integrates various AI models (OpenAI, Google, Anthropic, X, Deepseek, Perplexity) into your code review process, providing automated feedback on pull requests. Improve your code quality and streamline your development workflow with this powerful and customizable AI-driven code review tool.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/ --ext .js",
+    "lint:fix": "eslint src/ --ext .js --fix",
+    "setup": "node setup.js",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AleksandrFurmenkovOfficial/ai-code-review.git"
+  },
+  "keywords": [
+    "nodejs",
+    "node",
+    "ai",
+    "js",
+    "ci",
+    "code",
+    "actions",
+    "ci-cd",
+    "code-review",
+    "node-js",
+    "action",
+    "cicd",
+    "openai",
+    "chatgpt",
+    "google",
+    "gemini",
+    "anthropic",
+    "claude",
+    "deepseek",
+    "perplexity"
+  ],
+  "author": "Aleksandr Furmenkov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AleksandrFurmenkovOfficial/ai-code-review/issues"
+  },
+  "homepage": "https://github.com/AleksandrFurmenkovOfficial/ai-code-review#readme",
+  "dependencies": {
+    "@actions/core": "^2.0.1",
+    "@actions/github": "^6.0.1",
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@google/generative-ai": "^0.24.1",
+    "he": "^1.2.0",
+    "openai": "^6.15.0",
+    "shell-quote": "^1.8.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "jest": "^30.2.0"
+  }
+}

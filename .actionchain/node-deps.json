@@ -1,0 +1,14 @@
+{
+  "status": "unbundlable",
+  "entries": [
+    {
+      "path": "src/index.js",
+      "status": "unbundlable",
+      "reason": "Could not resolve \"@anthropic-ai/sdk\""
+    },
+    {
+      "path": "setup.js",
+      "status": "self_contained"
+    }
+  ]
+}

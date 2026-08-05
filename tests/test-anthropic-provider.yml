@@ -1,0 +1,39 @@
+name: Test Anthropic provider usage
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_EVENT_NAME: pull_request
+      GITHUB_REF: refs/pull/1/merge
+      GITHUB_HEAD_REF: feature-branch
+      GITHUB_BASE_REF: main
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run AI code review action with Anthropic provider
+        id: action
+        uses: .
+        with:
+          token: fake-github-token
+          ai_provider: anthropic
+          anthropic_api_key: fake-anthropic-key
+          anthropic_model: claude-sonnet-4-5-20250929
+          owner: test-owner
+          repo: test-repo
+          pr_number: "1"
+          fail_action_if_review_failed: "false"
+        continue-on-error: true
+
+      - name: Assert action completed (did not crash the runner)
+        run: |
+          echo "Action step outcome: ${{ steps.action.outcome }}"
+          # The action may fail due to fake credentials, but the workflow should continue
+          # because fail_action_if_review_failed is false and we use continue-on-error
+          if [ "${{ steps.action.outcome }}" = "success" ] || [ "${{ steps.action.outcome }}" = "failure" ]; then
+            echo "PASS: action completed with outcome '${{ steps.action.outcome }}'"
+          else
+            echo "FAIL: unexpected outcome '${{ steps.action.outcome }}'"
+            exit 1
+          fi

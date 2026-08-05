@@ -1,0 +1,40 @@
+name: Test basic usage - no fail on error
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Extract repo info
+        id: repo-info
+        run: |
+          echo "owner=${GITHUB_REPOSITORY%/*}" >> $GITHUB_OUTPUT
+          echo "name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+
+      - name: Pre-install npm dependencies
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          if [ -f package-lock.json ]; then
+            npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund
+          else
+            npm install --omit=dev --no-audit --no-fund
+          fi
+
+      - name: Run AI Code Review action (expect graceful warning, not failure)
+        id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          ai_provider: openai
+          openai_api_key: fake-openai-key-for-testing
+          owner: ${{ steps.repo-info.outputs.owner }}
+          repo: ${{ steps.repo-info.outputs.name }}
+          pr_number: "999999"
+          fail_action_if_review_failed: "false"
+
+      - name: Assert step completed without failure
+        run: |
+          echo "Action completed without failing the workflow step."
+          echo "PASS: action ran with fail_action_if_review_failed=false and did not fail the workflow"

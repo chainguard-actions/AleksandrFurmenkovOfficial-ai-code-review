@@ -1,0 +1,5 @@
+# Custom Review Rules
+- Ensure all functions have docstrings
+- Check for proper error handling
+- Verify no hardcoded secrets or credentials
+- Confirm code follows project style guidelines

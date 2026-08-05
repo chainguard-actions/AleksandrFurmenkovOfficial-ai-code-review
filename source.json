@@ -1,0 +1,16 @@
+{
+  "owner": "AleksandrFurmenkovOfficial",
+  "repo": "ai-code-review",
+  "version": "v1.0",
+  "commit_sha": "1d75404db7d56026c81700b5b8e5e8c613234e69",
+  "url": "https://github.com/AleksandrFurmenkovOfficial/ai-code-review",
+  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
+  "test_agent_version": "2",
+  "harden_agent_version": "2",
+  "node_artifact": {
+    "gcs_uri": "gs://prod-actions-node-artifacts/node-artifacts/AleksandrFurmenkovOfficial/ai-code-review/v1.0/sha256-1ac67349c4ba71076fd0d2f61b2a0d902b792168a54a62925eb2b2cd031fa6f6.tar.gz",
+    "sha256": "1ac67349c4ba71076fd0d2f61b2a0d902b792168a54a62925eb2b2cd031fa6f6",
+    "size_bytes": 3949331
+  }
+}

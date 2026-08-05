@@ -1,0 +1,46 @@
+name: Test unsupported AI provider causes failure
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Extract repo info
+        id: repo-info
+        run: |
+          echo "owner=${GITHUB_REPOSITORY%/*}" >> $GITHUB_OUTPUT
+          echo "name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+
+      - name: Pre-install npm dependencies
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          if [ -f package-lock.json ]; then
+            npm ci --omit=dev --no-audit --no-fund || npm install --omit=dev --no-audit --no-fund
+          else
+            npm install --omit=dev --no-audit --no-fund
+          fi
+
+      - name: Run AI Code Review action with unsupported provider
+        id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          ai_provider: unsupported_provider
+          owner: ${{ steps.repo-info.outputs.owner }}
+          repo: ${{ steps.repo-info.outputs.name }}
+          pr_number: "1"
+          fail_action_if_review_failed: "true"
+        continue-on-error: true
+
+      - name: Assert step failed due to unsupported provider
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "Step outcome: $OUTCOME"
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "FAIL: expected step to fail when using an unsupported AI provider"
+            exit 1
+          fi
+          echo "PASS: step correctly failed for unsupported AI provider"

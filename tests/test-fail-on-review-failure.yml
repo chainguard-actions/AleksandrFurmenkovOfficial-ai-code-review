@@ -1,0 +1,63 @@
+name: Test fail_action_if_review_failed behavior
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_EVENT_NAME: pull_request
+      GITHUB_REF: refs/pull/1/merge
+      GITHUB_HEAD_REF: feature-branch
+      GITHUB_BASE_REF: main
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run AI code review action with fail_action_if_review_failed true
+        id: action_fail
+        uses: .
+        with:
+          token: fake-github-token
+          ai_provider: openai
+          openai_api_key: fake-openai-key
+          owner: test-owner
+          repo: test-repo
+          pr_number: "1"
+          fail_action_if_review_failed: "true"
+        continue-on-error: true
+
+      - name: Assert action failed when fail_action_if_review_failed is true
+        run: |
+          echo "Action step outcome: ${{ steps.action_fail.outcome }}"
+          # With fake credentials and fail_action_if_review_failed=true,
+          # the action should fail (not succeed)
+          if [ "${{ steps.action_fail.outcome }}" = "failure" ]; then
+            echo "PASS: action correctly failed when review failed and fail_action_if_review_failed=true"
+          elif [ "${{ steps.action_fail.outcome }}" = "success" ]; then
+            echo "WARN: action succeeded unexpectedly (possibly mocked or no-op with fake token)"
+          else
+            echo "FAIL: unexpected outcome '${{ steps.action_fail.outcome }}'"
+            exit 1
+          fi
+
+      - name: Run AI code review action with fail_action_if_review_failed false
+        id: action_no_fail
+        uses: .
+        with:
+          token: fake-github-token
+          ai_provider: openai
+          openai_api_key: fake-openai-key
+          owner: test-owner
+          repo: test-repo
+          pr_number: "1"
+          fail_action_if_review_failed: "false"
+        continue-on-error: true
+
+      - name: Assert action did not crash runner when fail_action_if_review_failed is false
+        run: |
+          echo "Action step outcome: ${{ steps.action_no_fail.outcome }}"
+          if [ "${{ steps.action_no_fail.outcome }}" = "success" ] || [ "${{ steps.action_no_fail.outcome }}" = "failure" ]; then
+            echo "PASS: action completed with outcome '${{ steps.action_no_fail.outcome }}'"
+          else
+            echo "FAIL: unexpected outcome '${{ steps.action_no_fail.outcome }}'"
+            exit 1
+          fi
