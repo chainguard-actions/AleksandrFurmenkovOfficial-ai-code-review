@@ -6,9 +6,9 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.0 | [`v1.0`](https://github.com/chainguard-actions/AleksandrFurmenkovOfficial-ai-code-review/tree/v1.0) | [`1d75404`](https://github.com/AleksandrFurmenkovOfficial/ai-code-review/commit/1d75404db7d56026c81700b5b8e5e8c613234e69) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v1.0 | [`v1.0`](https://github.com/chainguard-actions/AleksandrFurmenkovOfficial-ai-code-review/tree/v1.0) | [`1d75404`](https://github.com/AleksandrFurmenkovOfficial/ai-code-review/commit/1d75404db7d56026c81700b5b8e5e8c613234e69) | [`HARDENING.md`](https://github.com/chainguard-actions/AleksandrFurmenkovOfficial-ai-code-review/blob/v1.0/HARDENING.md) |
 
 ## Privacy
 
